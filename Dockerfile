@@ -36,7 +36,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install JavaScript dependencies
-ARG NODE_VERSION=18.20.4
+ARG NODE_VERSION=20.12.2
 ARG YARN_VERSION=latest
 ENV PATH=/usr/local/node/bin:$PATH
 RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
@@ -54,8 +54,8 @@ RUN bundle install && \
     bundle exec bootsnap precompile -j 1 --gemfile
 
 # Install node modules
-COPY package.json yarn.lock ./
-RUN yarn install --immutable
+COPY package.json package-lock.json ./
+RUN npm ci
 
 # Copy application code
 COPY . .
