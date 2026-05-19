@@ -1,0 +1,16 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    environment:
+      - RAILS_ENV=development
+    # Добавляем эти две строки, чтобы esbuild не падал:
+    stdin_open: true
+    tty: true
+    command: bash -c "npm install -g yarn && bundle install && yarn install && rm -f tmp/pids/server.pid && bin/dev"
